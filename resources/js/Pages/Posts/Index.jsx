@@ -3,7 +3,7 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage, Link } from '@inertiajs/inertia-react';
   
-export default function Dashboard(props) {
+export default function Index(props) {
     const { posts } = usePage().props
   
     function destroy(e) {
@@ -40,15 +40,20 @@ export default function Dashboard(props) {
                                         <th className="px-4 py-2 w-20">No.</th>
                                         <th className="px-4 py-2">Title</th>
                                         <th className="px-4 py-2">Body</th>
+                                        <th className="px-4 py-2">Display</th>
+                                        <th className="px-4 py-2">Approved</th>
                                         <th className="px-4 py-2">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {posts.map(({ id, title, body }) => (
+
+                                    {posts.map(({ id, title, body,display,approved}) => (
                                         <tr>
                                             <td className="border px-4 py-2">{ id }</td>
                                             <td className="border px-4 py-2">{ title }</td>
                                             <td className="border px-4 py-2">{ body }</td>
+                                            <td className="border px-4 py-2">{ posts.display }</td>
+                                            <td className="border px-4 py-2">{ posts.approved }</td>
                                             <td className="border px-4 py-2">
                                                 <Link
                                                     tabIndex="1"

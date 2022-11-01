@@ -4,7 +4,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PostController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +14,6 @@ use App\Http\Controllers\PostController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::resource('posts', PostController::class);
 
 Route::get('/', function () {
