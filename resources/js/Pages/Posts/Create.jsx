@@ -6,18 +6,35 @@ import React, { useState } from "react";
 export default function Create(props) {
   
     const { data, setData, errors, post } = useForm({
+        language:"",
         title: "",
         body: "",
-        display:"Y",
-        approved:"",
+        is_display:"Y",
+        is_approved:"N",
+        // type:"",
+        posted_date:"",
+        posted_time:""
 
     });
   
-    const [radioType, setRadioType] = useState("Y");
+    const options = [
+        {value: '', text: '--Choose an option--'},
+        {value: 'en', text: 'English'},
+        {value: 'jp', text: 'Japanese'},
+    ];
 
+    const [radioType, setRadioType] = useState("Y");
+    const [selected, setSelected] = useState(options[0].value);
+
+    const handleChangeSelect = event => {
+        setSelected(event.target.value);
+        setData("language", event.target.value)
+    };
 
     function handleSubmit(e) {
         e.preventDefault();
+
+        
         post(route("posts.store"));
     }
   
@@ -44,6 +61,20 @@ export default function Create(props) {
                             </div>
   
                             <form name="createForm" onSubmit={handleSubmit}>
+                                <div className="flex flex-col">
+                                    <label className="">Language</label>
+                                    <select value={selected} onChange={handleChangeSelect}>
+                                        {options.map(option => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.text}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <span className="text-red-600">
+                                            {errors.language}
+                                    </span>
+                                </div>
+                                
                                 <div className="flex flex-col">
                                     <div className="mb-4">
                                         <label className="">Title</label>
@@ -132,6 +163,40 @@ export default function Create(props) {
                                             /> I Agree with this content...
                                         </label>
                                     </div>
+
+                                    <div className="flex flex-col">
+                                        <label className="">Posted At </label>
+                                        <input
+                                            type="date"
+                                            className="w-full px-4 py-2"
+                                            label="posted_date"
+                                            name="posted_date"
+                                            value={data.posted_date}
+                                            onChange={(e) =>
+                                                setData("posted_date", e.target.value)
+                                            }
+                                        />
+                                         <span className="text-red-600">
+                                                {errors.posted_date}
+                                        </span>
+
+                                        <input   
+                                            // value="{{ $workingtime->from->isoFormat('HH:mm') }}" 
+                                            type="time"
+                                            className="w-full px-4 py-2"
+                                            label="posted_time"
+                                            name="posted_time"
+                                            value={data.posted_time}
+                                            onChange={(e) =>
+                                                setData("posted_time", e.target.value)
+                                            }
+
+                                        />
+                                        <span className="text-red-600">
+                                                {errors.posted_time}
+                                        </span>
+                                    </div>
+
 
 
                                 </div>

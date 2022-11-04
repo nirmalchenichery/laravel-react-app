@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('language');
             $table->string('title');
             $table->text('body');
-            $table->string('display');
-            $table->string('approved');
+            $table->string('is_display');
+            $table->string('is_approved');
+            $table->datetime('posted_at');
             $table->timestamps();
         });
     }

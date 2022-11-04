@@ -2,6 +2,7 @@ import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage, Link } from '@inertiajs/inertia-react';
+import PostListItem from '@/Components/PostListItem';
   
 export default function Index(props) {
     const { posts } = usePage().props
@@ -40,48 +41,56 @@ export default function Index(props) {
                                         <th className="px-4 py-2 w-20">No.</th>
                                         <th className="px-4 py-2">Title</th>
                                         <th className="px-4 py-2">Body</th>
-                                        <th className="px-4 py-2">Display</th>
+                                        <th className="px-4 py-2">Display Option</th>
                                         <th className="px-4 py-2">Approved</th>
+                                        <th className="px-4 py-2">Posted at</th>
                                         <th className="px-4 py-2">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {/* {
+                                        posts.map(function(post,i){
+                                            console.log(post);
+                                            <PostListItem key={i} data={post}/>
+                                        })
+                                    } */}
 
-                                    {posts.map(({ id, title, body,display,approved}) => (
-                                        <tr>
-                                            <td className="border px-4 py-2">{ id }</td>
-                                            <td className="border px-4 py-2">{ title }</td>
-                                            <td className="border px-4 py-2">{ body }</td>
-                                            <td className="border px-4 py-2">{ posts.display }</td>
-                                            <td className="border px-4 py-2">{ posts.approved }</td>
-                                            <td className="border px-4 py-2">
-                                                <Link
-                                                    tabIndex="1"
-                                                    className="px-4 py-2 text-sm text-white bg-blue-500 rounded"
-                                                    href={route("posts.edit", id)}
-                                                >
-                                                    Edit
-                                                </Link>
-                                                <button
-                                                    onClick={destroy}
-                                                    id={id}
-                                                    tabIndex="-1"
-                                                    type="button"
-                                                    className="mx-1 px-4 py-2 text-sm text-white bg-red-500 rounded"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-  
+                                    {posts.map(({ id, title, body,is_display ,is_approved, posted_at }) => (
+                                            <tr>
+                                                <td className="border px-4 py-2">{ id }</td>
+                                                <td className="border px-4 py-2">{ title }</td>
+                                                <td className="border px-4 py-2">{ body }</td>
+                                                <td className="border px-4 py-2">{ is_display }</td>
+                                                <td className="border px-4 py-2">{ is_approved }</td>
+                                                <td className="border px-4 py-2">{ posted_at }</td>
+                                                <td className="border px-4 py-2">
+                                                    <Link
+                                                        tabIndex="1"
+                                                        className="px-4 py-2 text-sm text-white bg-blue-500 rounded"
+                                                        href={route("posts.edit", id)}
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                    <button
+                                                        onClick={destroy}
+                                                        id={id}
+                                                        tabIndex="-1"
+                                                        type="button"
+                                                        className="mx-1 px-4 py-2 text-sm text-white bg-red-500 rounded"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+
                                     {posts.length === 0 && (
                                         <tr>
                                             <td
                                                 className="px-6 py-4 border-t"
                                                 colSpan="4"
                                             >
-                                                No contacts found.
+                                                No record found.
                                             </td>
                                         </tr>
                                     )}

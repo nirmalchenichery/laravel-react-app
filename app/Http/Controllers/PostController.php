@@ -16,11 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
+        // var_dump("index");
         $posts = Post::all();
 
-        echo "<pre>";
-        var_dump(count($posts)); 
-        echo "</pre>";
+        // var_dump(count($posts));
 
         return Inertia::render('Posts/Index', ['posts' => $posts]);
     }
@@ -37,7 +36,7 @@ class PostController extends Controller
     
     public function show()
     {
-        return Inertia::render('Posts/Create');
+        return Inertia::render('Posts/show');
     }
 
     /**
@@ -47,21 +46,31 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
-        // var_dump($request->input()); exit;
-
         Validator::make($request->all(), [
             'title' => ['required'],
             'body' => ['required'],
-            'display' => ['required'],
-            'approved'=> ['required'],
+            'is_display' => ['required'],
+            'is_approved'=> ['required'],
+            'language'=> ['required'],
+            'posted_date'=> ['required'],
+            'posted_time'=> ['required'],
+
         ])->validate();
-   
 
+        $posted_at=  $request->input('posted_date') . " ". $request->input('posted_time');
+        $date = strtotime($posted_at);
 
+        Post::create([
+            'language'      => $request->input('language'),
+            'title'         => $request->input('title'),
+            'body'          => $request->input('body'),
+            'is_display'    => $request->input('is_display'),
+            'is_approved'   => $request->input('is_approved'),
+            // 'posted_at'     => date('Y-m-d H:i:s', $date),
+            'posted_at'     => date('Y-m-d H:i:s'),
 
-        Post::create($request->all());
-    
+        ]);
+
         return redirect()->route('posts.index');
     }
   
