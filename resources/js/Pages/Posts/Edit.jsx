@@ -1,22 +1,32 @@
-// import React from 'react';
+import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
-import { Head, useForm, Link } from '@inertiajs/inertia-react';
-import React, { useState } from "react";
+import { Head, useForm, usePage, Link } from '@inertiajs/inertia-react';
+import { useState } from "react";
+import Moment from 'moment';
 
-export default function Create(props) {
+export default function Edit(props) {
   
-    const { data, setData, errors, post } = useForm({
-        language:"",
-        title: "",
-        body: "",
-        is_display:"Y",
-        is_approved:"N",
-        // type:"",
-        posted_date:"",
-        posted_time:""
-
+    const { post } = usePage().props;
+    const { data, setData, put, errors } = useForm({
+        title: post.title || "",
+        body: post.body || "",
+        language: post.language || "",
+        is_display: post.is_display || "",
+        is_approved: post.is_approved || "",
+        posted_date: Moment(post.posted_at).format('YYYY-MM-DD') || "",
+        posted_time: Moment(post.posted_at).format('hh:mm') || "",
     });
   
+    function handleSubmit(e) {
+        e.preventDefault();
+        put(route("posts.update", post.id));
+    }
+
+    const handleChangeSelect = event => {
+        setSelected(event.target.value);
+        setData("language", event.target.value)
+    };
+
     const options = [
         {value: '', text: '--Choose an option--'},
         {value: 'en', text: 'English'},
@@ -26,21 +36,12 @@ export default function Create(props) {
     const [radioType, setRadioType] = useState("Y");
     const [selected, setSelected] = useState(options[0].value);
 
-    const handleChangeSelect = event => {
-        setSelected(event.target.value);
-        setData("language", event.target.value)
-    };
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        post(route("posts.store"));
-    }
   
     return (
         <Authenticated
             auth={props.auth}
             errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Create Post</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Post</h2>}
         >
             <Head title="Posts" />
   
@@ -59,9 +60,10 @@ export default function Create(props) {
                             </div>
   
                             <form name="createForm" onSubmit={handleSubmit}>
+
                                 <div className="flex flex-col">
                                     <label className="">Language</label>
-                                    <select value={selected} onChange={handleChangeSelect}>
+                                    <select value={data.language} onChange={handleChangeSelect}>
                                         {options.map(option => (
                                             <option key={option.value} value={option.value}>
                                                 {option.text}
@@ -72,7 +74,7 @@ export default function Create(props) {
                                             {errors.language}
                                     </span>
                                 </div>
-                                
+
                                 <div className="flex flex-col">
                                     <div className="mb-4">
                                         <label className="">Title</label>
@@ -119,7 +121,7 @@ export default function Create(props) {
                                                 <input
                                                     type="radio"
                                                     value="Y"
-                                                    checked={radioType == "Y"}
+                                                    checked={data.is_display == "Y"}
                                                     onChange={(e) =>
                                                         setData("is_display", e.target.value)
                                                     }
@@ -134,12 +136,12 @@ export default function Create(props) {
                                                 <input
                                                     type="radio"
                                                     value="N"
-                                                    checked={radioType == "N"}
+                                                    checked={data.is_display == "N"}
                                                     onChange={(e) =>
                                                         setData("is_display", e.target.value)
                                                     }
                                                 />
-                                                 No
+                                                 No 
                                                 </div>
                                         </div>
 
@@ -147,19 +149,22 @@ export default function Create(props) {
                                             {errors.is_display}
                                         </span>
 
-                                    </div>    
+                                    </div>
 
                                     <div className="mb-0">
                                         <label>
                                             <input
                                             type="checkbox"
-                                            value="Y"
-                                            defaultChecked=""
+                                            value= "Y"
+                                            defaultChecked={data.is_approved =="Y"?"Y":""}
                                             onChange={(e) =>
-                                                setData("approved", e.target.value)
+                                                setData("is_approved", e.target.value)
                                             }
                                             /> I Agree with this content...
                                         </label>
+                                        <span className="text-red-600">
+                                            {errors.is_approved}
+                                        </span>
                                     </div>
 
                                     <div className="flex flex-col">
@@ -179,9 +184,8 @@ export default function Create(props) {
                                         </span>
 
                                         <input   
-                                            // value="{{ $workingtime->from->isoFormat('HH:mm') }}" 
                                             type="time"
-                                            className="w-full px-4 py-2"
+                                            className=" px-4 py-2"
                                             label="posted_time"
                                             name="posted_time"
                                             value={data.posted_time}
@@ -195,15 +199,13 @@ export default function Create(props) {
                                         </span>
                                     </div>
 
-
-
                                 </div>
                                 <div className="mt-4">
                                     <button
                                         type="submit"
                                         className="px-6 py-2 font-bold text-white bg-green-500 rounded"
                                     >
-                                        Save
+                                        Update
                                     </button>
                                 </div>
                             </form>

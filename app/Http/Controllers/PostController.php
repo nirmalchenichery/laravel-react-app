@@ -16,12 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        // var_dump("index");
         $posts = Post::all();
-
-        // var_dump(count($posts));
-
-        return Inertia::render('Posts/Index', ['posts' => $posts]);
+        // return Inertia::render('Posts/Index', ['posts' => $posts]);
+        return Inertia::render('Posts/Index')
+            ->with('posts' , $posts);
     }
   
     /**
@@ -34,9 +32,11 @@ class PostController extends Controller
         return Inertia::render('Posts/Create');
     }
     
-    public function show()
+    public function show(Post $post)
     {
-        return Inertia::render('Posts/show');
+        return Inertia::render('Posts/Show')
+            ->with('post' , $post);
+        // return Inertia::render('Posts/show');
     }
 
     /**
@@ -66,9 +66,7 @@ class PostController extends Controller
             'body'          => $request->input('body'),
             'is_display'    => $request->input('is_display'),
             'is_approved'   => $request->input('is_approved'),
-            // 'posted_at'     => date('Y-m-d H:i:s', $date),
-            'posted_at'     => date('Y-m-d H:i:s'),
-
+            'posted_at'     => date('Y-m-d H:i:s', $date),
         ]);
 
         return redirect()->route('posts.index');
@@ -81,9 +79,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return Inertia::render('Posts/Edit', [
-            'post' => $post
-        ]);
+        return Inertia::render('Posts/Edit')
+            ->with('post' , $post);
     }
     
     /**
@@ -96,9 +93,25 @@ class PostController extends Controller
         Validator::make($request->all(), [
             'title' => ['required'],
             'body' => ['required'],
+            'is_display' => ['required'],
+            'is_approved'=> ['required'],
+            'language'=> ['required'],
+            'posted_date'=> ['required'],
+            'posted_time'=> ['required'],
+
         ])->validate();
+
+        $posted_at=  $request->input('posted_date') . " ". $request->input('posted_time');
     
-        Post::find($id)->update($request->all());
+        Post::find($id)->update([
+            'language'      => $request->input('language'),
+            'title'         => $request->input('title'),
+            'body'          => $request->input('body'),
+            'is_display'    => $request->input('is_display'),
+            'is_approved'   => $request->input('is_approved'),
+            'posted_at'     => date('Y-m-d H:i:s', strtotime($posted_at)),
+        ]);
+
         return redirect()->route('posts.index');
     }
     

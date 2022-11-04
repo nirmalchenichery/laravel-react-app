@@ -39,6 +39,7 @@ export default function Index(props) {
                                 <thead>
                                     <tr className="bg-gray-100">
                                         <th className="px-4 py-2 w-20">No.</th>
+                                        <th className="px-4 py-2">Language</th>
                                         <th className="px-4 py-2">Title</th>
                                         <th className="px-4 py-2">Body</th>
                                         <th className="px-4 py-2">Display Option</th>
@@ -55,22 +56,33 @@ export default function Index(props) {
                                         })
                                     } */}
 
-                                    {posts.map(({ id, title, body,is_display ,is_approved, posted_at }) => (
-                                            <tr>
+                                    {posts.map(({ id, language,title, body,is_display ,is_approved, posted_at }) => (
+                                            <tr key={id}>
                                                 <td className="border px-4 py-2">{ id }</td>
+                                                <td className="border px-4 py-2">{ (language=="en")?"English":"Japanese"}</td>
                                                 <td className="border px-4 py-2">{ title }</td>
                                                 <td className="border px-4 py-2">{ body }</td>
-                                                <td className="border px-4 py-2">{ is_display }</td>
-                                                <td className="border px-4 py-2">{ is_approved }</td>
+                                                <td className="border px-4 py-2">{ (is_display =="Y")?"Yes":"No" }</td>
+                                                <td className="border px-4 py-2">{ (is_approved =="Y")?"Yes":"No"}</td>
                                                 <td className="border px-4 py-2">{ posted_at }</td>
-                                                <td className="border px-4 py-2">
+                                                <td className="border px-4 py-3">
+
                                                     <Link
                                                         tabIndex="1"
-                                                        className="px-4 py-2 text-sm text-white bg-blue-500 rounded"
+                                                        className="px-3 py-3 text-sm text-white bg-blue-500 rounded"
+                                                        href={route("posts.show", id)}
+                                                    >
+                                                        Show
+                                                    </Link>
+
+                                                    <Link
+                                                        tabIndex="1"
+                                                        className="px-3 py-3 text-sm text-white bg-green-500 rounded"
                                                         href={route("posts.edit", id)}
                                                     >
                                                         Edit
                                                     </Link>
+                                                    
                                                     <button
                                                         onClick={destroy}
                                                         id={id}
