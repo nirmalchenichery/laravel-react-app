@@ -10,7 +10,7 @@ export default function Create(props) {
         title: "",
         body: "",
         is_display:"Y",
-        is_approved:"N",
+        is_approved:"",
         // type:"",
         posted_date:"",
         posted_time:""
@@ -60,7 +60,7 @@ export default function Create(props) {
   
                             <form name="createForm" onSubmit={handleSubmit}>
                                 <div className="flex flex-col">
-                                    <label className="">Language</label>
+                                    <label className="font-bold">Language</label>
                                     <select value={selected} onChange={handleChangeSelect}>
                                         {options.map(option => (
                                             <option key={option.value} value={option.value}>
@@ -75,7 +75,7 @@ export default function Create(props) {
                                 
                                 <div className="flex flex-col">
                                     <div className="mb-4">
-                                        <label className="">Title</label>
+                                        <label className="font-bold">Title</label>
                                         <input
                                             type="text"
                                             className="w-full px-4 py-2"
@@ -91,7 +91,7 @@ export default function Create(props) {
                                         </span>
                                     </div>
                                     <div className="mb-0">
-                                        <label className="">Body</label>
+                                        <label className="font-bold">Body</label>
                                         <textarea
                                             type="text"
                                             className="w-full rounded"
@@ -109,14 +109,14 @@ export default function Create(props) {
                                     </div>
 
                                     <div className="mb-0">
-                                        <h1>Choose Display Option</h1>
+                                        <label className="font-bold">Choose Display Option</label>
                                         <div className="radio-btn-container">
                                                 <div className="radio-btn"
                                                     onClick={() => {
                                                         setRadioType("Y");
                                                     }}
                                                 >
-                                                <input
+                                                <input 
                                                     type="radio"
                                                     value="Y"
                                                     checked={radioType == "Y"}
@@ -156,14 +156,18 @@ export default function Create(props) {
                                             value="Y"
                                             defaultChecked=""
                                             onChange={(e) =>
-                                                setData("approved", e.target.value)
+                                                setData("is_approved", e.target.value)
                                             }
                                             /> I Agree with this content...
                                         </label>
+                                        <br />
+                                        <span className="text-red-600">
+                                            {errors.is_approved}
+                                        </span>
                                     </div>
 
                                     <div className="flex flex-col">
-                                        <label className="">Posted At </label>
+                                        <label className="font-bold">Posted At </label>
                                         <input
                                             type="date"
                                             className="w-full px-4 py-2"
@@ -175,11 +179,10 @@ export default function Create(props) {
                                             }
                                         />
                                          <span className="text-red-600">
-                                                {errors.posted_date}
+                                            {errors.posted_date}
                                         </span>
 
                                         <input   
-                                            // value="{{ $workingtime->from->isoFormat('HH:mm') }}" 
                                             type="time"
                                             className="w-full px-4 py-2"
                                             label="posted_time"
@@ -188,10 +191,9 @@ export default function Create(props) {
                                             onChange={(e) =>
                                                 setData("posted_time", e.target.value)
                                             }
-
                                         />
                                         <span className="text-red-600">
-                                                {errors.posted_time}
+                                            {errors.posted_time}
                                         </span>
                                     </div>
 

@@ -3,6 +3,10 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm, usePage, Link } from '@inertiajs/inertia-react';
 import { useState } from "react";
 import Moment from 'moment';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import axios, { Axios } from 'axios';
 
 export default function Show(props) {
   
@@ -18,17 +22,50 @@ export default function Show(props) {
         posted_time: Moment(post.posted_at).format('hh:mm') || "",
     });
   
+    // state = {
+    //     comments:[],
+    //     loading:true,
+    // }
+
+    const [ cdata, setCdata] = useState('');
+    // const [ loading, setLoading] = useState('');
+
+    const [ commentDetails, setCommentDetails] = useState([]);
+
+    async function comment(id){
+        const response = await axios.get('/comment/' + id);
+        // console.log(response.data.comments);
+
+        if (response.data.status === 200){
+            
+            setCommentDetails(response.data.comments);
+            // setLoading('loading',false);
+
+            // this.setState({
+            //     comments: response.data.comments,
+            //     loading:false
+            // });
+        }
+        // const response = await axios.get('/comment',{
+        //     params: {
+        //         id: 1
+        //     }
+        // });
+    }
+
+    console.log(commentDetails);
+
+    const [ openReminder, setOpenReminder] = useState(false);
+
+    function showComments(id) {
+        setOpenReminder(true);
+        comment(id);
+    }
+
     function handleSubmit(e) {
         e.preventDefault();
         put(route("posts.update", post.id));
     }
-
-    function showComments(e) {
-        e.preventDefault();
-        alert("Comments display here");
-        // put(route("posts.update", post.id));
-    }
-
 
     const handleChangeSelect = event => {
         setSelected(event.target.value);
@@ -44,8 +81,11 @@ export default function Show(props) {
     const [radioType, setRadioType] = useState("Y");
     const [selected, setSelected] = useState(options[0].value);
 
-  
+   
     return (
+
+        
+
         <Authenticated
             auth={props.auth}
             errors={props.errors}
@@ -102,7 +142,7 @@ export default function Show(props) {
                                             <th>Comments : </th>
                                             <td>
                                                 <button
-                                                    onClick={showComments}
+                                                    onClick={() => showComments(post.id)}
                                                     id={data.id}
                                                     tabIndex="-1"
                                                     type="button"
@@ -110,6 +150,9 @@ export default function Show(props) {
                                                 >
                                                     Show Comments
                                                 </button>
+
+                                               
+
                                             </td>
                                         </tr>
                                     </tbody>
@@ -119,6 +162,34 @@ export default function Show(props) {
                     </div>
                 </div>
             </div>
+
+            <dialog open={openReminder}>
+                <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <div className="mt-2 px-7 py-3">
+                        <p className="text-sm text-gray-500">
+                           {commentDetails.userid}
+                        </p>
+                    </div>
+
+                    <button
+                        id="ok-btn"
+                        className="mx-1 px-4 py-2 text-sm text-white bg-green-500 rounded"
+                    >
+                        OK
+                    </button>
+
+                    <button
+                        id="ok-btn"
+                        className="mx-1 px-4 py-2 text-sm text-white bg-orange-500 rounded"
+                        onClick={() => setOpenReminder(false)}
+                    >
+                        Close
+                    </button>
+                </div>
+            </dialog>
         </Authenticated>
     );
+
+
+    
 }

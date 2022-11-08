@@ -21,7 +21,15 @@ class PostController extends Controller
         return Inertia::render('Posts/Index')
             ->with('posts' , $posts);
     }
-  
+
+    public function getComment($id)
+    {
+        // var_dump();
+        // $posts = Post::all();
+        return Post::find($id);
+    }
+
+
     /**
      * Write code on Method
      *
@@ -46,6 +54,9 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
+        // var_dump($request->input()); exit;
+
         Validator::make($request->all(), [
             'title' => ['required'],
             'body' => ['required'],

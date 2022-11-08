@@ -13,6 +13,11 @@ export default function Index(props) {
         }
     }
    
+    
+    const post_list = posts.map( (post, index) => {
+        return <PostListItem key={index} post={post}/>
+    })
+
     return (
         <Authenticated
             auth={props.auth}
@@ -35,79 +40,30 @@ export default function Index(props) {
                                 </Link>
                             </div>
   
-                            <table className="table-fixed w-full">
-                                <thead>
-                                    <tr className="bg-gray-100">
-                                        <th className="px-4 py-2 w-20">No.</th>
-                                        <th className="px-4 py-2">Language</th>
-                                        <th className="px-4 py-2">Title</th>
-                                        <th className="px-4 py-2">Body</th>
-                                        <th className="px-4 py-2">Display Option</th>
-                                        <th className="px-4 py-2">Approved</th>
-                                        <th className="px-4 py-2">Posted at</th>
-                                        <th className="px-4 py-2">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {/* {
-                                        posts.map(function(post,i){
-                                            console.log(post);
-                                            <PostListItem key={i} data={post}/>
-                                        })
-                                    } */}
+                            <div className="w-full">
+                                    <div className="grid grid-cols-8">
+                                        <div className="px-4 py-2 w-20">No.</div>
+                                        <div className="px-4 py-2">Language</div>
+                                        <div className="px-4 py-2">Title</div>
+                                        <div className="px-4 py-2">Body</div>
+                                        <div className="px-4 py-2">Display Option</div>
+                                        <div className="px-4 py-2">Approved</div>
+                                        <div className="px-4 py-2">Posted at</div>
+                                        <div className="px-4 py-2">Action</div>
+                                    </div>
+                                    {post_list}
 
-                                    {posts.map(({ id, language,title, body,is_display ,is_approved, posted_at }) => (
-                                            <tr key={id}>
-                                                <td className="border px-4 py-2">{ id }</td>
-                                                <td className="border px-4 py-2">{ (language=="en")?"English":"Japanese"}</td>
-                                                <td className="border px-4 py-2">{ title }</td>
-                                                <td className="border px-4 py-2">{ body }</td>
-                                                <td className="border px-4 py-2">{ (is_display =="Y")?"Yes":"No" }</td>
-                                                <td className="border px-4 py-2">{ (is_approved =="Y")?"Yes":"No"}</td>
-                                                <td className="border px-4 py-2">{ posted_at }</td>
-                                                <td className="border px-4 py-3">
-
-                                                    <Link
-                                                        tabIndex="1"
-                                                        className="px-3 py-3 text-sm text-white bg-blue-500 rounded"
-                                                        href={route("posts.show", id)}
-                                                    >
-                                                        Show
-                                                    </Link>
-
-                                                    <Link
-                                                        tabIndex="1"
-                                                        className="px-3 py-3 text-sm text-white bg-green-500 rounded"
-                                                        href={route("posts.edit", id)}
-                                                    >
-                                                        Edit
-                                                    </Link>
-                                                    
-                                                    <button
-                                                        onClick={destroy}
-                                                        id={id}
-                                                        tabIndex="-1"
-                                                        type="button"
-                                                        className="mx-1 px-4 py-2 text-sm text-white bg-red-500 rounded"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-
-                                    {posts.length === 0 && (
-                                        <tr>
-                                            <td
+                                    {posts.lengdiv === 0 && (
+                                        <div>
+                                            <div
                                                 className="px-6 py-4 border-t"
                                                 colSpan="4"
                                             >
                                                 No record found.
-                                            </td>
-                                        </tr>
+                                            </div>
+                                        </div>
                                     )}
-                                </tbody>
-                            </table>
+                            </div>
                         </div>
                     </div>
                 </div>
