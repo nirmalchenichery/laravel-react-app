@@ -22,12 +22,12 @@ class PostController extends Controller
             ->with('posts' , $posts);
     }
 
-    public function getComment($id)
-    {
-        // var_dump();
-        // $posts = Post::all();
-        return Post::find($id);
-    }
+    // public function getComment($id)
+    // {
+    //     // var_dump();
+    //     // $posts = Post::all();
+    //     return Post::find($id);
+    // }
 
 
     /**

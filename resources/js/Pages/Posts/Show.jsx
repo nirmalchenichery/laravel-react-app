@@ -3,10 +3,10 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm, usePage, Link } from '@inertiajs/inertia-react';
 import { useState } from "react";
 import Moment from 'moment';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import axios, { Axios } from 'axios';
+import PostListItem from '@/Components/PostListItem';
+import Dialog from '@/Components/Dialog';
+import Modal from "@/Components/Modal";
 
 export default function Show(props) {
   
@@ -30,21 +30,14 @@ export default function Show(props) {
     const [ cdata, setCdata] = useState('');
     // const [ loading, setLoading] = useState('');
 
-    const [ commentDetails, setCommentDetails] = useState([]);
+    const [ commentDetails, setCommentDetails] = useState("");
 
     async function comment(id){
         const response = await axios.get('/comment/' + id);
-        // console.log(response.data.comments);
-
+      
         if (response.data.status === 200){
-            
-            setCommentDetails(response.data.comments);
-            // setLoading('loading',false);
-
-            // this.setState({
-            //     comments: response.data.comments,
-            //     loading:false
-            // });
+            // console.log(response.data.comments);
+            setCommentDetails('commentDetails',response.data.comments);
         }
         // const response = await axios.get('/comment',{
         //     params: {
@@ -53,7 +46,7 @@ export default function Show(props) {
         // });
     }
 
-    console.log(commentDetails);
+    // console.log(" array -->" . commentDetails);
 
     const [ openReminder, setOpenReminder] = useState(false);
 
@@ -80,6 +73,8 @@ export default function Show(props) {
 
     const [radioType, setRadioType] = useState("Y");
     const [selected, setSelected] = useState(options[0].value);
+
+    const [showModal, setShowModal] = useState(false);
 
    
     return (
@@ -163,11 +158,13 @@ export default function Show(props) {
                 </div>
             </div>
 
-            <dialog open={openReminder}>
+            <Dialog open={openReminder} />
+
+            {/* <dialog open={openReminder}>
                 <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                     <div className="mt-2 px-7 py-3">
                         <p className="text-sm text-gray-500">
-                           {commentDetails.userid}
+                           Content here
                         </p>
                     </div>
 
@@ -186,7 +183,27 @@ export default function Show(props) {
                         Close
                     </button>
                 </div>
-            </dialog>
+            </dialog> */}
+
+        <div className="flex flex-col items-center justify-center h-60">
+            
+            <button
+                className="px-4 py-2 text-purple-100 bg-purple-600 rounded-md"
+                type="button"
+                onClick={() => {
+                    setShowModal(true);
+                }}
+            >
+                Open Modal
+            </button>
+
+            {showModal && <Modal OpenOrShowModal={setShowModal} 
+                                 title="Popup Example" 
+                                 content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>}
+        </div>
+
+
+            
         </Authenticated>
     );
 
