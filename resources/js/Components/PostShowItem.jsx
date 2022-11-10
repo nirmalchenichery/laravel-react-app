@@ -5,7 +5,7 @@ import { Inertia } from "@inertiajs/inertia";
 import { useState } from "react";
 import Modal from "@/Components/Modal";
 import PostCommentList from '@/Components/PostCommentList';
-
+import axios, { Axios } from 'axios';
 
 const PostShowItem = (props) => {
 
@@ -96,6 +96,8 @@ const PostShowItem = (props) => {
                                 <Modal 
                                     OpenOrShowModal={setShowModal} 
                                     title="Comments" 
+                                    btnOk ="OK"
+                                    btnClose="Close"
                                     content={comments_list}
                                 />
                             }

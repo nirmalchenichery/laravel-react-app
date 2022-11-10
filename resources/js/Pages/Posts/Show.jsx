@@ -3,12 +3,9 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Head, useForm, usePage, Link } from '@inertiajs/inertia-react';
 import { useState } from "react";
 import Moment from 'moment';
-import axios, { Axios } from 'axios';
+// import axios, { Axios } from 'axios';
 import PostListItem from '@/Components/PostListItem';
 import PostShowItem from '@/Components/PostShowItem';
-
-import Dialog from '@/Components/Dialog';
-import Modal from "@/Components/Modal";
 
 export default function Show(props) {
   
@@ -25,25 +22,6 @@ export default function Show(props) {
         posted_time: Moment(post.posted_at).format('hh:mm') || "",
     });
   
-    // function handleSubmit(e) {
-    //     e.preventDefault();
-    //     put(route("posts.update", post.id));
-    // }
-
-    // const handleChangeSelect = event => {
-    //     setSelected(event.target.value);
-    //     setData("language", event.target.value)
-    // };
-
-    // const options = [
-    //     {value: '', text: '--Choose an option--'},
-    //     {value: 'en', text: 'English'},
-    //     {value: 'jp', text: 'Japanese'},
-    // ];
-
-    // const [radioType, setRadioType] = useState("Y");
-    // const [selected, setSelected] = useState(options[0].value);
-
     return (
 
         <Authenticated
@@ -68,8 +46,6 @@ export default function Show(props) {
                             </div>
   
                             <PostShowItem post={data}/>
-
-                           
 
                         </div>
                     </div>

@@ -24,13 +24,13 @@ const Modal = (props) => {
                                         className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
                                         onClick={() => props.OpenOrShowModal(false)}
                                     >
-                                        Delete
+                                        {props.btnOk}
                                     </button>
                                     <button
                                         className="w-full mt-2 p-2.5 flex-1 text-gray-800 rounded-md outline-none border ring-offset-2 ring-indigo-600 focus:ring-2"
                                         onClick={() => props.OpenOrShowModal(false)}
                                     >
-                                        Cancel
+                                        {props.btnClose}
                                     </button>
                                 </div>
                             </div>
