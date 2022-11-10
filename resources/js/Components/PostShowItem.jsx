@@ -4,6 +4,8 @@ import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Inertia } from "@inertiajs/inertia";
 import { useState } from "react";
 import Modal from "@/Components/Modal";
+import PostCommentList from '@/Components/PostCommentList';
+
 
 const PostShowItem = (props) => {
 
@@ -40,18 +42,7 @@ const PostShowItem = (props) => {
     var comments_list = [];
     if(comments.length > 0){
         comments_list = comments.map( (comment, index) => { 
-
-
-            return <div key={index}  className="border rounded w-full flex flex-col">
-                <div className='text-gray-500 text-xs'>{comment.email}</div>
-                <div className=''>{comment.comment}</div>
-            </div>
-
-
-
-
-
-
+            return <PostCommentList key={index} comment={comment}/>
         })
     }
 

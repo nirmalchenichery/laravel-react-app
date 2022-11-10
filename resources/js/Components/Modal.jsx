@@ -16,7 +16,7 @@ const Modal = (props) => {
                                 <h4 className="text-lg font-medium text-gray-800">
                                     {props.title}
                                 </h4>
-                                <div className="mt-2 text-[15px] leading-relaxed text-gray-500">
+                                <div className="mt-2 text-[15px] leading-relaxed text-black">
                                     {props.content}
                                 </div>
                                 <div className="items-center gap-2 mt-3 sm:flex">
