@@ -5,6 +5,8 @@ import { useState } from "react";
 import Moment from 'moment';
 import axios, { Axios } from 'axios';
 import PostListItem from '@/Components/PostListItem';
+import PostShowItem from '@/Components/PostShowItem';
+
 import Dialog from '@/Components/Dialog';
 import Modal from "@/Components/Modal";
 
@@ -12,6 +14,7 @@ export default function Show(props) {
   
     const { post } = usePage().props;
     const { data, setData, put, errors } = useForm({
+        id: post.id || "",
         title: post.title || "",
         body: post.body || "",
         language: post.language || "",
@@ -22,64 +25,26 @@ export default function Show(props) {
         posted_time: Moment(post.posted_at).format('hh:mm') || "",
     });
   
-    // state = {
-    //     comments:[],
-    //     loading:true,
+    // function handleSubmit(e) {
+    //     e.preventDefault();
+    //     put(route("posts.update", post.id));
     // }
 
-    const [ cdata, setCdata] = useState('');
-    // const [ loading, setLoading] = useState('');
+    // const handleChangeSelect = event => {
+    //     setSelected(event.target.value);
+    //     setData("language", event.target.value)
+    // };
 
-    const [ commentDetails, setCommentDetails] = useState("");
+    // const options = [
+    //     {value: '', text: '--Choose an option--'},
+    //     {value: 'en', text: 'English'},
+    //     {value: 'jp', text: 'Japanese'},
+    // ];
 
-    async function comment(id){
-        const response = await axios.get('/comment/' + id);
-      
-        if (response.data.status === 200){
-            // console.log(response.data.comments);
-            setCommentDetails('commentDetails',response.data.comments);
-        }
-        // const response = await axios.get('/comment',{
-        //     params: {
-        //         id: 1
-        //     }
-        // });
-    }
+    // const [radioType, setRadioType] = useState("Y");
+    // const [selected, setSelected] = useState(options[0].value);
 
-    // console.log(" array -->" . commentDetails);
-
-    const [ openReminder, setOpenReminder] = useState(false);
-
-    function showComments(id) {
-        setOpenReminder(true);
-        comment(id);
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        put(route("posts.update", post.id));
-    }
-
-    const handleChangeSelect = event => {
-        setSelected(event.target.value);
-        setData("language", event.target.value)
-    };
-
-    const options = [
-        {value: '', text: '--Choose an option--'},
-        {value: 'en', text: 'English'},
-        {value: 'jp', text: 'Japanese'},
-    ];
-
-    const [radioType, setRadioType] = useState("Y");
-    const [selected, setSelected] = useState(options[0].value);
-
-    const [showModal, setShowModal] = useState(false);
-
-   
     return (
-
-        
 
         <Authenticated
             auth={props.auth}
@@ -102,108 +67,15 @@ export default function Show(props) {
                                 </Link>
                             </div>
   
-                            <form name="showForm">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <th>No : </th>
-                                            <td>{post.id}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Language : </th>
-                                            <td>{(data.language=="en")?"English":"Japanese"}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Title : </th>
-                                            <td>{data.title}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Body : </th>
-                                            <td>{data.body}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Display Option : </th>
-                                            <td>{ (data.is_display =="Y")?"Yes":"No" }</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Approved : </th>
-                                            <td>{(data.is_approved =="Y")?"Yes":"No"}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Posted : </th>
-                                            <td>{ data.posted_at }</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Comments : </th>
-                                            <td>
-                                                <button
-                                                    onClick={() => showComments(post.id)}
-                                                    id={data.id}
-                                                    tabIndex="-1"
-                                                    type="button"
-                                                    className="mx-1 px-4 py-2 text-sm text-white bg-orange-500 rounded"
-                                                >
-                                                    Show Comments
-                                                </button>
+                            <PostShowItem post={data}/>
 
-                                               
+                           
 
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <Dialog open={openReminder} />
-
-            {/* <dialog open={openReminder}>
-                <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                    <div className="mt-2 px-7 py-3">
-                        <p className="text-sm text-gray-500">
-                           Content here
-                        </p>
-                    </div>
-
-                    <button
-                        id="ok-btn"
-                        className="mx-1 px-4 py-2 text-sm text-white bg-green-500 rounded"
-                    >
-                        OK
-                    </button>
-
-                    <button
-                        id="ok-btn"
-                        className="mx-1 px-4 py-2 text-sm text-white bg-orange-500 rounded"
-                        onClick={() => setOpenReminder(false)}
-                    >
-                        Close
-                    </button>
-                </div>
-            </dialog> */}
-
-        <div className="flex flex-col items-center justify-center h-60">
-            
-            <button
-                className="px-4 py-2 text-purple-100 bg-purple-600 rounded-md"
-                type="button"
-                onClick={() => {
-                    setShowModal(true);
-                }}
-            >
-                Open Modal
-            </button>
-
-            {showModal && <Modal OpenOrShowModal={setShowModal} 
-                                 title="Popup Example" 
-                                 content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>}
-        </div>
-
-
-            
         </Authenticated>
     );
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Modal = (props) => {
-
+    
     return (
         <>
             <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -16,9 +16,9 @@ const Modal = (props) => {
                                 <h4 className="text-lg font-medium text-gray-800">
                                     {props.title}
                                 </h4>
-                                <p className="mt-2 text-[15px] leading-relaxed text-gray-500">
+                                <div className="mt-2 text-[15px] leading-relaxed text-gray-500">
                                     {props.content}
-                                </p>
+                                </div>
                                 <div className="items-center gap-2 mt-3 sm:flex">
                                     <button
                                         className="w-full mt-2 p-2.5 flex-1 text-white bg-red-600 rounded-md outline-none ring-offset-2 ring-red-600 focus:ring-2"
