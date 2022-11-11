@@ -49,9 +49,6 @@ export default function SearchIndex(props) {
       }, []);
      
 
-    console.log(postFromDb);
-
-
     var post_list = [];
     if(postFromDb){
         post_list = postFromDb.map( (post, index) => { 
