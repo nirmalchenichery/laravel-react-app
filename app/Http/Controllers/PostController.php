@@ -22,6 +22,16 @@ class PostController extends Controller
             ->with('posts' , $posts);
     }
 
+    public function search()
+    {
+        $posts = Post::all();
+        return Inertia::render('Posts/SearchIndex')
+               ->with('posts' , $posts);
+               
+        // return Inertia::render('Posts/SearchIndex');
+    }
+
+
     // public function getComment($id)
     // {
     //     // var_dump();
@@ -136,4 +146,6 @@ class PostController extends Controller
         Post::find($id)->delete();
         return redirect()->route('posts.index');
     }
+
+    
 }
