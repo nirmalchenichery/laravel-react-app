@@ -17,7 +17,7 @@ use App\Http\Controllers\CommentController;
 */
 Route::resource('posts', PostController::class);
 
-Route::get('search', [PostController::class, 'search']);
+Route::get('search', [PostController::class, 'search'])->name('posts.search');
 
 Route::get('comment/{id}', [CommentController::class, 'index']);
 

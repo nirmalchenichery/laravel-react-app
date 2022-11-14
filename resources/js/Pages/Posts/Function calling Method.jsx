@@ -3,56 +3,62 @@ import Authenticated from '@/Layouts/Authenticated';
 import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage, Link, useForm } from '@inertiajs/inertia-react';
 import PostListItem from '@/Components/PostListItem';
+import { data } from "autoprefixer";
   
 export default function SearchIndex(props) {
     const { posts } = usePage().props
   
-    function destroy(e) {
-        if (confirm("Are you sure you want to delete this user?")) {
-            Inertia.delete(route("posts.destroy", e.currentTarget.id));
-        }
-    }
-   
-    const { data, setData, errors, post } = useForm({
-        search:"",
-    });
-
-
-
+    const [input,SetInput] = useState("");
     const [postFromDb, setPostFromDb] = useState(null);
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // http://127.0.0.1:8000/api/posts
+
+    const fetchPost = async () =>{
+
+        fetch("http://127.0.0.1:8000/api/posts")
+        .then((response) => response.json())
+        .then((data)=>{
+            // console.log(data);
+            setPostFromDb(data.post);
+        })
+        .catch((err) =>console.log(err));
+
+
+
+        // const response = await fetch("http://127.0.0.1:8000/api/posts");
+        // // console.log(response);
+        // setPostFromDb(response);
+    }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/posts/' + data.search)
-          .then((response) => {
-            if (!response.ok) 
-            {
-              throw new Error(
-                `This is an HTTP error: The status is ${response.status}`
-              );
-            }
-            return response.json();
-          })
-          .then((actualData) => {
-            setPostFromDb(actualData.post);
-            setError(null);
-          })
-          .catch((err) => {
-            setError(err.message);
-            setPostFromDb(null);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      }, []);
+        fetchPost();
+    }, []);
+    
+    // useEffect(() => {
+    //     fetch('http://127.0.0.1:8000/api/posts')
+    //       .then((response) => {
+    //         if (!response.ok) 
+    //         {
+    //           throw new Error(
+    //             `This is an HTTP error: The status is ${response.status}`
+    //           );
+    //         }
+    //         return response.json();
+    //       })
+    //       .then((actualData) => {
+    //         setPostFromDb(actualData.post);
+    //         setError(null);
+    //       })
+    //       .catch((err) => {
+    //         setError(err.message);
+    //         setPostFromDb(null);
+    //       })
+    //       .finally(() => {
+    //         setLoading(false);
+    //       });
+    //   }, []);
      
-
-    console.log(postFromDb);
-
 
     var post_list = [];
     if(postFromDb){
@@ -60,6 +66,13 @@ export default function SearchIndex(props) {
             return <PostListItem key={index} post={post}/>
         });
     }
+
+    function destroy(e) {
+        if (confirm("Are you sure you want to delete this user?")) {
+            Inertia.delete(route("posts.destroy", e.currentTarget.id));
+        }
+    }
+   
 
 
     return (
@@ -88,11 +101,9 @@ export default function SearchIndex(props) {
                                 <input
                                     type="text"
                                     className="w-full px-4 py-2"
-                                    label="Search"
                                     name="search"
-                                    value={data.search}
                                     onChange={(e) =>
-                                        setData("search", e.target.value)
+                                        SetInput(e.target.value)
                                     }
                                 />
                             </div>
@@ -109,10 +120,25 @@ export default function SearchIndex(props) {
                                         <div className="px-4 py-2">Posted at</div>
                                         <div className="px-4 py-2">Action</div>
                                     </div>
-                                    {post_list}
+                                        {/* {console.log(postFromDb)} */}
+                                        
+                                        {/* <div>
+                                            {postFromDb.map( (post, index) => { 
+                                                console.log(post)
+                                            })
+                                            }
+                                        </div> */}
 
 
-                                    {post_list === 0 && (
+                                        {/* postFromDb.map((item)=>{
+
+                                        }) */}
+
+
+                                    {/* {postFromDb} */}
+
+
+                                    {/* {post_list === 0 && (
                                         <div>
                                             <div
                                                 className="px-6 py-4 border-t"
@@ -121,7 +147,7 @@ export default function SearchIndex(props) {
                                                 No record found.
                                             </div>
                                         </div>
-                                    )}
+                                    )} */}
                             </div>
                         </div>
                     </div>

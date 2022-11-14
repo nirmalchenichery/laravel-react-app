@@ -39,6 +39,15 @@ export default function Index(props) {
                                     Create Post
                                 </Link>
                             </div>
+
+                            <div className="flex items-center justify-between mb-6">
+                                <Link
+                                    className="px-6 py-2 text-white bg-green-500 rounded-md focus:outline-none"
+                                    href={ route("posts.search") }
+                                >
+                                    Search
+                                </Link>
+                            </div>
   
                             <div className="w-full">
                                     <div className="grid grid-cols-8">

@@ -4,65 +4,84 @@ import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage, Link, useForm } from '@inertiajs/inertia-react';
 import PostListItem from '@/Components/PostListItem';
 import { data } from "autoprefixer";
+import { toLower } from "lodash";
   
 export default function SearchIndex(props) {
     const { posts } = usePage().props
   
-    const [input,SetInput] = useState("");
+    const [searchinput,SetInput] = useState("");
     const [postFromDb, setPostFromDb] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const fetchPost = async () =>{
+        fetch('http://127.0.0.1:8000/api/posts')
+              .then((response) => {
+                if (!response.ok) 
+                {
+                  throw new Error(
+                    `This is an HTTP error: The status is ${response.status}`
+                  );
+                }
+                return response.json();
+              })
+              .then((actualData) => {
+                setPostFromDb(actualData.post);
+                setError(null);
+              })
+              .catch((err) => {
+                setError(err.message);
+                setPostFromDb(null);
+              })
+              .finally(() => {
+                setLoading(false);
+              });
+    }
 
-    // const fetchPost = async () =>{
-    //     const response = await fetch("http://127.0.0.1:8000/api/posts");
-    //     console.log(response);
-    //     setPostFromDb(response.post);
-    // }
+    useEffect(() => {
+        fetchPost();
+    }, []);
 
     // useEffect(() => {
-    //     fetchPost();
-    // }, []);
+    //     const url = "http://127.0.0.1:8000/api/posts";
+    //     const fetchData = async () => {
+    //       try {
+    //         const response = await fetch(url);
+    //         const json = await response.json();
+    //         console.log(json.post);
     
-    useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/posts')
-          .then((response) => {
-            if (!response.ok) 
-            {
-              throw new Error(
-                `This is an HTTP error: The status is ${response.status}`
-              );
-            }
-            return response.json();
-          })
-          .then((actualData) => {
-            setPostFromDb(actualData.post);
-            setError(null);
-          })
-          .catch((err) => {
-            setError(err.message);
-            setPostFromDb(null);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      }, []);
-     
+    //         setPostFromDb(json.post);
+    //       } catch (error) {
+    //         console.log("error", error);
+    //       }
+    //     };
+    
+    //     fetchData();
+    //   }, []);
 
     var post_list = [];
     if(postFromDb){
-        post_list = postFromDb.map( (post, index) => { 
+        post_list = postFromDb.filter((val)=>{
+            if(searchinput ==""){
+                return val
+            }
+            else if (val.title.toLowerCase().includes(searchinput.toLowerCase())|| 
+                     val.body.toLowerCase().includes(searchinput.toLowerCase())){
+                return val
+            }
+        }).map( (post, index) => { 
             return <PostListItem key={index} post={post}/>
         });
     }
+    
+    // function destroy(e) {
+    //     // if (confirm("Are you sure you want to delete this user?")) {
+    //     //     Inertia.(route("posts.search", e.currentTarget.id));
+    //     // }
 
-    function destroy(e) {
-        if (confirm("Are you sure you want to delete this user?")) {
-            Inertia.delete(route("posts.destroy", e.currentTarget.id));
-        }
-    }
-
-
+    //     post(route("posts.search"));
+    // }
+   
     return (
         <Authenticated
             auth={props.auth}
@@ -86,9 +105,11 @@ export default function SearchIndex(props) {
                             </div>
   
                             <div className="flex items-center justify-between mb-6">
+                                {/* Title */}
                                 <input
                                     type="text"
                                     className="w-full px-4 py-2"
+                                    placeholder="Search String ..."
                                     name="search"
                                     onChange={(e) =>
                                         SetInput(e.target.value)
@@ -108,19 +129,7 @@ export default function SearchIndex(props) {
                                         <div className="px-4 py-2">Posted at</div>
                                         <div className="px-4 py-2">Action</div>
                                     </div>
-                                    {post_list}
-
-
-                                    {post_list === 0 && (
-                                        <div>
-                                            <div
-                                                className="px-6 py-4 border-t"
-                                                colSpan="4"
-                                            >
-                                                No record found.
-                                            </div>
-                                        </div>
-                                    )}
+                                       {post_list}
                             </div>
                         </div>
                     </div>

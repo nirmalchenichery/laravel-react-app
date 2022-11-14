@@ -27,18 +27,7 @@ class PostController extends Controller
         $posts = Post::all();
         return Inertia::render('Posts/SearchIndex')
                ->with('posts' , $posts);
-               
-        // return Inertia::render('Posts/SearchIndex');
     }
-
-
-    // public function getComment($id)
-    // {
-    //     // var_dump();
-    //     // $posts = Post::all();
-    //     return Post::find($id);
-    // }
-
 
     /**
      * Write code on Method
