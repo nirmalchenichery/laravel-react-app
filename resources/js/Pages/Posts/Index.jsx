@@ -1,22 +1,40 @@
-import React from 'react';
+// import React from 'react';
+import React, { useState} from "react";
 import Authenticated from '@/Layouts/Authenticated';
 import { Inertia } from "@inertiajs/inertia";
 import { Head, usePage, Link } from '@inertiajs/inertia-react';
 import PostListItem from '@/Components/PostListItem';
-  
+import Pagination from '@/Components/Pagination';
+ 
 export default function Index(props) {
     const { posts } = usePage().props
-  
+    const [searchinput,SetInput] = useState("");
+
     function destroy(e) {
         if (confirm("Are you sure you want to delete this user?")) {
             Inertia.delete(route("posts.destroy", e.currentTarget.id));
         }
     }
    
-    
-    const post_list = posts.map( (post, index) => {
-        return <PostListItem key={index} post={post}/>
-    })
+    // Search
+    var post_list = [];
+    if(posts){
+        post_list = posts.data.filter((val)=>{
+            if(searchinput ==""){
+                return val
+            }
+            else if (val.title.toLowerCase().includes(searchinput.toLowerCase())|| 
+                     val.body.toLowerCase().includes(searchinput.toLowerCase())){
+                return val
+            }
+        }).map( (post, index) => { 
+            return <PostListItem key={index} post={post}/>
+        });
+    }
+
+    // const post_list = posts.map( (post, index) => {
+    //     return <PostListItem key={index} post={post}/>
+    // })
 
     return (
         <Authenticated
@@ -38,9 +56,6 @@ export default function Index(props) {
                                 >
                                     Create Post
                                 </Link>
-                            </div>
-
-                            <div className="flex items-center justify-between mb-6">
                                 <Link
                                     className="px-6 py-2 text-white bg-green-500 rounded-md focus:outline-none"
                                     href={ route("posts.search") }
@@ -48,6 +63,20 @@ export default function Index(props) {
                                     Search
                                 </Link>
                             </div>
+                            <div className="flex items-center justify-between mb-6">
+                                {/* Title */}
+                                <input
+                                    type="text"
+                                    className="w-full px-4 py-2"
+                                    placeholder="Search String ..."
+                                    name="search"
+                                    onChange={(e) =>
+                                        SetInput(e.target.value)
+                                    }
+                                />
+                            </div>
+
+                            
   
                             <div className="w-full">
                                     <div className="grid grid-cols-8">
@@ -61,8 +90,8 @@ export default function Index(props) {
                                         <div className="px-4 py-2">Action</div>
                                     </div>
                                     {post_list}
-
-                                    {posts.lengdiv === 0 && (
+                                    <Pagination class="mt-6" links={posts.links} />
+                                    {/* {posts.lengdiv === 0 && (
                                         <div>
                                             <div
                                                 className="px-6 py-4 border-t"
@@ -71,7 +100,7 @@ export default function Index(props) {
                                                 No record found.
                                             </div>
                                         </div>
-                                    )}
+                                    )} */}
                             </div>
                         </div>
                     </div>

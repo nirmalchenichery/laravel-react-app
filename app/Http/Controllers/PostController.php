@@ -16,16 +16,27 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        // return Inertia::render('Posts/Index', ['posts' => $posts]);
-        return Inertia::render('Posts/Index')
-            ->with('posts' , $posts);
+        // $posts = Post::all();
+        // return Inertia::render('Posts/Index')
+        //     ->with('posts' , $posts);
+
+       $posts = Post::latest()->paginate(3);
+       return Inertia::render('Posts/Index')
+               ->with('posts' , $posts);
     }
 
     public function search()
     {
-        $posts = Post::all();
+        // $posts = Post::all();
+        $posts = Post::latest()->paginate(3);
         return Inertia::render('Posts/SearchIndex')
+               ->with('posts' , $posts);
+    }
+
+    public function pagination()
+    {
+       $posts = Post::latest()->paginate(10);
+       return Inertia::render('Posts/SearchPagination')
                ->with('posts' , $posts);
     }
 

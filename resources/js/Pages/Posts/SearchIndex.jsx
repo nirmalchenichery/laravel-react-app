@@ -74,14 +74,12 @@ export default function SearchIndex(props) {
         });
     }
     
-    // function destroy(e) {
-    //     // if (confirm("Are you sure you want to delete this user?")) {
-    //     //     Inertia.(route("posts.search", e.currentTarget.id));
-    //     // }
-
-    //     post(route("posts.search"));
-    // }
-   
+    function destroy(e) {
+        if (confirm("Are you sure you want to delete this user?")) {
+            Inertia.delete(route("posts.destroy", e.currentTarget.id));
+        }
+    }
+      
     return (
         <Authenticated
             auth={props.auth}
@@ -130,6 +128,7 @@ export default function SearchIndex(props) {
                                         <div className="px-4 py-2">Action</div>
                                     </div>
                                        {post_list}
+                                       
                             </div>
                         </div>
                     </div>
