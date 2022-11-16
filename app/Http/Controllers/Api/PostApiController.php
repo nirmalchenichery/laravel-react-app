@@ -11,21 +11,29 @@ class PostApiController extends Controller
     public function index()
     {
         $post = Post::all();
-
         return response()->json([
             'status' => true,
             'post' => $post
         ]);
     }
 
+    // public function index()
+    // {
+    //     $post = Post::paginate(3);
+    //     return response()->json([
+    //         'status' => true,
+    //         'post' => $post
+    //     ]);
+    // }
+
     public function show($search)
     {
         if($search){ 
             $post = Post::where('title', 'LIKE', '%'.$search.'%')
-                    // ->orWhere('email', 'LIKE', '%'.$search.'%')
+                    ->orWhere('body', 'LIKE', '%'.$search.'%')
                     ->get();
         }else{
-            $post = Post::all();
+            $post = Post::all(); 
         }
 
         return response()->json([
@@ -33,4 +41,19 @@ class PostApiController extends Controller
             'post' => $post
         ]);
     }
+    // public function show($search)
+    // {
+    //     if($search){ 
+    //         $post = Post::where('title', 'LIKE', '%'.$search.'%')->paginate(3);
+    //                 // ->orWhere('email', 'LIKE', '%'.$search.'%')
+    //                 // ->get();
+    //     }else{
+    //         $post = Post::paginate(3); 
+    //     }
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'post' => $post
+    //     ]);
+    // }
 }

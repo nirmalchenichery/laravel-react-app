@@ -29,7 +29,7 @@ class PostController extends Controller
     {
         // $posts = Post::all();
         $posts = Post::latest()->paginate(3);
-        return Inertia::render('Posts/SearchIndex')
+        return Inertia::render('Posts/SearchPaginatedPage')
                ->with('posts' , $posts);
     }
 
