@@ -15,13 +15,34 @@ export default function Index(props) {
             Inertia.delete(route("posts.destroy", e.currentTarget.id));
         }
     }
+
+    const [PostFromDb,setPostFromDb] = useState(posts.data);
    
-    console.log(posts);
+    console.log(PostFromDb);
+
+    const [order,setOrder] = useState("ASC");
+    const sorting = async (col)=>{
+
+        if(order ==="ASC"){
+            const sorted =[...PostFromDb].sort((a,b)=>
+                a[col] > b[col] ? 1 : -1
+            );
+            setPostFromDb(sorted);
+            setOrder("DSC");
+        }
+        if(order ==="DSC"){
+            const sorted =[...PostFromDb].sort((a,b)=>
+                a[col] < b[col] ? 1 : -1
+            );
+            setPostFromDb(sorted);
+            setOrder("ASC");
+        }
+    };
 
     // Search
     var post_list = [];
-    if(posts){
-        post_list = posts.data.filter((val)=>{
+    if(PostFromDb){
+        post_list = PostFromDb.filter((val)=>{
             if(searchinput ==""){
                 return val
             }
@@ -62,7 +83,7 @@ export default function Index(props) {
                                     className="px-6 py-2 text-white bg-green-500 rounded-md focus:outline-none"
                                     href={ route("posts.search") }
                                 >
-                                    Search
+                                    Search Page
                                 </Link>
                             </div>
                             <div className="flex items-center justify-between mb-6">
@@ -77,32 +98,21 @@ export default function Index(props) {
                                     }
                                 />
                             </div>
-
-                            
   
                             <div className="w-full">
                                     <div className="grid grid-cols-8">
-                                        <div className="px-4 py-2 w-20">No.</div>
-                                        <div className="px-4 py-2">Language</div>
-                                        <div className="px-4 py-2">Title</div>
-                                        <div className="px-4 py-2">Body</div>
-                                        <div className="px-4 py-2">Display Option</div>
-                                        <div className="px-4 py-2">Approved</div>
-                                        <div className="px-4 py-2">Posted at</div>
-                                        <div className="px-4 py-2">Action</div>
+                                        <div onClick={()=>sorting('id')} className="px-4 py-2 w-20 font-bold">No.</div>
+                                        <div onClick={()=>sorting('language')} className="px-4 py-2 font-bold">Language</div>
+                                        <div onClick={()=>sorting('title')} className="px-4 py-2 font-bold">Title</div>
+                                        <div onClick={()=>sorting('body')} className="px-4 py-2 font-bold">Body</div>
+                                        <div onClick={()=>sorting('is_display')} className="px-4 py-2 font-bold">Display Option</div>
+                                        <div onClick={()=>sorting('is_approved')} className="px-4 py-2 font-bold">Approved</div>
+                                        <div onClick={()=>sorting('posted_at')} className="px-4 py-2 font-bold">Posted at</div>
+                                        <div className="px-4 py-2 font-bold">Action</div>
                                     </div>
                                     {post_list}
                                     <Pagination class="mt-6" links={posts.links} />
-                                    {/* {posts.lengdiv === 0 && (
-                                        <div>
-                                            <div
-                                                className="px-6 py-4 border-t"
-                                                colSpan="4"
-                                            >
-                                                No record found.
-                                            </div>
-                                        </div>
-                                    )} */}
+                                    
                             </div>
                         </div>
                     </div>

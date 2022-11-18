@@ -21,6 +21,9 @@ Route::get('search', [PostController::class, 'search'])->name('posts.search');
 Route::get('pagination', [PostController::class, 'pagination']);
 Route::get('comment/{id}', [CommentController::class, 'index']);
 
+Route::get('sort', [PostController::class, 'sort']);
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),

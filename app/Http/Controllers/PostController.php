@@ -40,6 +40,13 @@ class PostController extends Controller
                ->with('posts' , $posts);
     }
 
+    public function sort()
+    {
+       $posts = Post::latest()->paginate(10);
+       return Inertia::render('Posts/SearchPaginatedBoot')
+               ->with('posts' , $posts);
+    }
+    
     /**
      * Write code on Method
      *

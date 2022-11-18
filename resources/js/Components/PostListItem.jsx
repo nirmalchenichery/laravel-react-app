@@ -14,7 +14,7 @@ const PostListItem = (props) => {
     }
 
     return (
-        <div className='grid grid-cols-8'>
+        <div key={props.post.id} className='grid grid-cols-8'>
             <div className="border px-4 py-2">{props.post.id}</div>
             <div className="border px-4 py-2">{(props.post.language =="en")?"English":"Japanese" }</div>
             <div className="border px-4 py-2">{props.post.title}</div>
