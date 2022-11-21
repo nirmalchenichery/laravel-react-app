@@ -5,7 +5,6 @@ import { Head, usePage, Link, useForm } from '@inertiajs/inertia-react';
 import PostListItem from '@/Components/PostListItem';
 import { data } from "autoprefixer";
 import { toLower } from "lodash";
-// import pagination from "rect-js-pagination"
   
 export default function SearchIndex(props) {
     const { posts } = usePage().props
@@ -16,7 +15,7 @@ export default function SearchIndex(props) {
     const [error, setError] = useState(null);
 
     const fetchPost = async () =>{
-        fetch('http://127.0.0.1:8000/api/posts/Prof')
+        fetch('http://127.0.0.1:8000/api/posts')
               .then((response) => {
                 if (!response.ok) 
                 {
@@ -27,9 +26,6 @@ export default function SearchIndex(props) {
                 return response.json();
               })
               .then((actualData) => {
-
-                console.log(actualData.post);
-
                 setPostFromDb(actualData.post);
                 setError(null);
               })
@@ -132,7 +128,7 @@ export default function SearchIndex(props) {
                                         <div className="px-4 py-2">Action</div>
                                     </div>
                                        {post_list}
-                                       {/* <Pagination class="mt-6" links={post_list.links} /> */}
+                                       <Pagination class="mt-6" links={post_list.links} />
                             </div>
                         </div>
                     </div>

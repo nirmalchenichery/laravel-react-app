@@ -68,9 +68,11 @@ export default function Create(props) {
                                             </option>
                                         ))}
                                     </select>
-                                    <span className="text-red-600">
-                                            {errors.language}
-                                    </span>
+                                   
+                                    {errors.language && <span className="border border-red-500 p-3 text-red-600">
+                                        {errors.language}
+                                    </span>}
+
                                 </div>
                                 
                                 <div className="flex flex-col">
@@ -86,9 +88,11 @@ export default function Create(props) {
                                                 setData("title", e.target.value)
                                             }
                                         />
-                                        <span className="text-red-600">
+                                       
+                                        {errors.title && <span className="border border-red-500 p-3 text-red-600">
                                             {errors.title}
-                                        </span>
+                                        </span>}
+
                                     </div>
                                     <div className="mb-0">
                                         <label className="font-bold">Body</label>
@@ -103,9 +107,9 @@ export default function Create(props) {
                                                 setData("body", e.target.value)
                                             }
                                         />
-                                        <span className="text-red-600">
+                                        {errors.body && <span className="border border-red-500 p-3 text-red-600">
                                             {errors.body}
-                                        </span>
+                                        </span>}
                                     </div>
 
                                     <div className="mb-0">
@@ -143,9 +147,9 @@ export default function Create(props) {
                                                 </div>
                                         </div>
 
-                                        <span className="text-red-600">
+                                        {errors.is_display && <span className="border border-red-500 p-3 text-red-600">
                                             {errors.is_display}
-                                        </span>
+                                        </span>}
 
                                     </div>    
 
@@ -161,9 +165,11 @@ export default function Create(props) {
                                             /> I Agree with this content...
                                         </label>
                                         <br />
-                                        <span className="text-red-600">
+
+                                        {errors.is_approved && <span className="border border-red-500 p-3 text-red-600">
                                             {errors.is_approved}
-                                        </span>
+                                        </span>}
+
                                     </div>
 
                                     <div className="flex flex-col">
@@ -178,9 +184,10 @@ export default function Create(props) {
                                                 setData("posted_date", e.target.value)
                                             }
                                         />
-                                         <span className="text-red-600">
+
+                                        {errors.posted_date && <span className="border border-red-500 p-3 text-red-600">
                                             {errors.posted_date}
-                                        </span>
+                                        </span>}
 
                                         <input   
                                             type="time"
@@ -192,12 +199,12 @@ export default function Create(props) {
                                                 setData("posted_time", e.target.value)
                                             }
                                         />
-                                        <span className="text-red-600">
+
+                                        {errors.posted_time && <span className="border border-red-500 p-3 text-red-600">
                                             {errors.posted_time}
-                                        </span>
+                                        </span>}
+
                                     </div>
-
-
 
                                 </div>
                                 <div className="mt-4">
